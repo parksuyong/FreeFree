@@ -3,8 +3,8 @@ package com.kindfriends.freefree.data
 import com.kindfriends.freefree.CoreConfigDef
 
 data class TongPanListItem (
-        var tongPanId: Long,            //통판 아이디
-        val userId: String="",         //아이디
+        var tongPanId: ArtistClass? = null,            //통판 작가 정보
+        val userId: String="",                 //아이디
         val userProfile: String="",    //유저 프로필 이미지 경로
         val startDate: String="",      //게시 시작일
         val endDate: String="",        //게시 종료일
