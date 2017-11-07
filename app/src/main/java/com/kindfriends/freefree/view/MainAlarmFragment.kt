@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import com.kindfriends.freefree.CoreConfigDef
 
 import com.kindfriends.freefree.R
-import com.kindfriends.freefree.data.TongPanListItem
 import java.util.ArrayList
 
 

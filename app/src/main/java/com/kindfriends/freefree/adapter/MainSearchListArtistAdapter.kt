@@ -1,6 +1,7 @@
 package com.kindfriends.freefree.adapter
 
 import android.databinding.DataBindingUtil
+import android.support.v4.view.ViewCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -44,6 +45,12 @@ class MainSearchListArtistAdapter(private var mActivity: MainSearchFragment,
                         ?.into(ArtistViewHolder(holder.itemView).dataBinding.artistImage)
 
                 ArtistViewHolder(holder.itemView).dataBinding.artistName?.setText(artistItem?.artistName)
+                val artistPinId=artistItem?.artistNo
+                ViewCompat.setTransitionName(ArtistViewHolder(holder.itemView).dataBinding.artistImage, "ARTISTLIST $artistPinId")
+                ArtistViewHolder(holder.itemView).dataBinding.root.setOnClickListener(View.OnClickListener {
+                    if(artistItem != null)
+                        mActivity.onClickArtistItem(artistItem,ArtistViewHolder(holder.itemView).dataBinding.artistImage)
+                })
 
 
             }

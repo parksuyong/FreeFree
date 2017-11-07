@@ -1,17 +1,54 @@
 package com.kindfriends.freefree.data
 
-import com.kindfriends.freefree.CoreConfigDef
+import android.os.Parcel
+import android.os.Parcelable
 
 /**
  * Created by qkrtndyd1234 on 2017. 10. 30..
  */
 
 data class ProductClass(
-        val productId: Int,                                     //제품 아이디
-        val productName: String="",                             //제품명
-        val productType: String="",                             //제품 종류
-        val productImage: String="",                            //제품 이미지 경로
-        val productPrice: Int,                                  //제품 가격
-        val productMaxCount: Int,                               //제품 총 수량
-        val productCurCount: Int=0                              //제품 현재 수량
-)
+        val artistNo: Int,
+        val productNo: Int,                                     //제품 아이디
+        val productName: String? = null,                             //제품명
+        val thumbImage: String? = null,                            //제품 이미지 경로
+        val detailImage: String? = null,                             //상세 페이지 이미지 경로
+        val createDate: String? = null,
+        val updateDate: String? = null,
+        val discounts: ArrayList<ProductDiscountClass>? = null,
+        val items: ArrayList<ProductItemsClass>? = null
+) : Parcelable {
+    constructor(source: Parcel) : this(
+            source.readInt(),
+            source.readInt(),
+            source.readString(),
+            source.readString(),
+            source.readString(),
+            source.readString(),
+            source.readString(),
+            source.createTypedArrayList(ProductDiscountClass.CREATOR),
+            source.createTypedArrayList(ProductItemsClass.CREATOR)
+    )
+
+    override fun describeContents() = 0
+
+    override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
+        writeInt(artistNo)
+        writeInt(productNo)
+        writeString(productName)
+        writeString(thumbImage)
+        writeString(detailImage)
+        writeString(createDate)
+        writeString(updateDate)
+        writeTypedList(discounts)
+        writeTypedList(items)
+    }
+
+    companion object {
+        @JvmField
+        val CREATOR: Parcelable.Creator<ProductClass> = object : Parcelable.Creator<ProductClass> {
+            override fun createFromParcel(source: Parcel): ProductClass = ProductClass(source)
+            override fun newArray(size: Int): Array<ProductClass?> = arrayOfNulls(size)
+        }
+    }
+}
