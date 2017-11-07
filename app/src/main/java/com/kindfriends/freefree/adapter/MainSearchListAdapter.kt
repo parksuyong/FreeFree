@@ -1,18 +1,23 @@
 package com.kindfriends.freefree.adapter
 
 import android.databinding.DataBindingUtil
+import android.support.v4.view.ViewCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import com.bumptech.glide.RequestManager
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.kindfriends.freefree.R
 import com.kindfriends.freefree.data.MainSearchListItem
 import com.kindfriends.freefree.databinding.ListSearchArtistViewBinding
 import com.kindfriends.freefree.databinding.ListSearchTongpanViewBinding
 import com.kindfriends.freefree.view.MainSearchFragment
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 import java.util.ArrayList
 
 /**
@@ -58,22 +63,36 @@ class MainSearchListAdapter(private var mActivity: MainSearchFragment,
             MAIN_SEARCH_LIST_ITEM_VIEW_TONGPAN -> {
 
                 val tongpanItem=mList?.get(position)?.tongpanData
-                val artistItem=tongpanItem?.artistInfo
+                val artistItem=tongpanItem?.artist
                 var mainGlideOptions = RequestOptions()
-                mGlideManager?.load(tongpanItem?.imageUrl)
+                mGlideManager?.load(tongpanItem?.mainImage)
                         ?.apply(mainGlideOptions)
                         ?.into(TongPanViewHolder(holder.itemView).dataBinding.mainImage)
-                var progileGlideOptions = RequestOptions()
+                var profileGlideOptions = RequestOptions()
+                profileGlideOptions.transform(CircleCrop())
                 mGlideManager?.load(artistItem?.artistProfile)
-                        ?.apply(progileGlideOptions)
+                        ?.apply(profileGlideOptions)
                         ?.into(TongPanViewHolder(holder.itemView).dataBinding.artistImage)
-                val minPrice = tongpanItem?.priceMin
-                val maxPrice = tongpanItem?.priceMax
 
                 TongPanViewHolder(holder.itemView).dataBinding.artistName?.setText(artistItem?.artistName)
                 TongPanViewHolder(holder.itemView).dataBinding.date?.setText("~"+tongpanItem?.endDate)
                 TongPanViewHolder(holder.itemView).dataBinding.title?.setText(tongpanItem?.title)
-                TongPanViewHolder(holder.itemView).dataBinding.priceRange?.setText("$minPrice ~  $maxPrice")
+
+                val artistPinId=artistItem?.artistNo
+                ViewCompat.setTransitionName(TongPanViewHolder(holder.itemView).dataBinding.artistImage, "TONGPANLIST $artistPinId")
+
+                val tongpanId=tongpanItem?.tongNo
+                ViewCompat.setTransitionName(TongPanViewHolder(holder.itemView).dataBinding.mainImage, "TONGPANLIST $tongpanId")
+
+                TongPanViewHolder(holder.itemView).dataBinding.root.setOnClickListener(View.OnClickListener {
+                    if (tongpanItem != null) {
+                        mActivity.onClickTongPanItem(tongpanItem,TongPanViewHolder(holder.itemView).dataBinding.mainImage)
+                    }
+                })
+                TongPanViewHolder(holder.itemView).dataBinding.artistImage.setOnClickListener(View.OnClickListener {
+                    if(artistItem != null)
+                        mActivity.onClickArtistItem(artistItem,TongPanViewHolder(holder.itemView).dataBinding.artistImage)
+                })
             }
         }
     }

@@ -1,15 +1,18 @@
 package com.kindfriends.freefree.view
 
+import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.os.Message
+import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.app.Fragment
+import android.support.v4.view.ViewCompat
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.kindfriends.freefree.CoreConfigDef
@@ -30,7 +33,8 @@ import java.util.ArrayList
  * create an instance of this fragment.
  */
 class MainSearchFragment : Fragment() {
-
+    val EXTRA_IMAGE_TRANSITION_NAME = "image_transition_name"
+    val EXTRA_ARTIST_NUM = "artist_number"
     // TODO: Rename and change types of parameters
     private var mdataBinding: FragmentMainSearchBinding? = null
     private var mitemList = ArrayList<MainSearchListItem>()
@@ -96,24 +100,47 @@ class MainSearchFragment : Fragment() {
 
     private fun getItems(){
         for(i in 0..10){
-            val artistInfo = ArtistClass(0,"kimya410","김먀","https://pbs.twimg.com/profile_images/913105871244115968/IRxddKR7_400x400.jpg")
-            val productList = ArrayList<ProductClass>()
-            for(j in 0..10){
-                val productItem = ProductClass(j,"오소마츠 스티커","스티커","https://c1.staticflickr.com/1/188/417924629_6832e79c98_z.jpg?zz=1",1050,100,5)
-                productList.add(productItem)
-            }
-            val tongpanInfo=TongPanClass(i,"8월 오소마츠 통판입니다.","The domestic dog (Canis lupus familiaris or Canis familiaris) is a member of genus Canis (canines) that forms part of the wolf-like canids, and is the most widely abundant carnivore. The dog and the extant gray wolf are sister taxa, with modern wolves not closely related to the wolves that were first domesticated. The dog was the first domesticated species and has been selectively bred over millennia for various behaviors, sensory capabilities, and physical attributes","http://digital-photography-school.com/wp-content/uploads/2012/10/image5.jpg",
-                    "10/29","11/10",1000,15000,"오소마츠상;스티커;컵;아크릴스탠드;책",productList,artistInfo)
+            val artistInfo = ArtistClass(i,"kimya410",null,"김먀","https://pbs.twimg.com/profile_images/913105871244115968/IRxddKR7_400x400.jpg","오소마츠 입덕","http://digital-photography-school.com/wp-content/uploads/2012/10/image5.jpg",null,"","")
+            val tongpanInfo=TongPanClass(artistInfo,i,"8월 오소마츠 통판입니다.","The domestic dog (Canis lupus familiaris or Canis familiaris) is a member of genus Canis (canines) that forms part of the wolf-like canids, and is the most widely abundant carnivore. The dog and the extant gray wolf are sister taxa, with modern wolves not closely related to the wolves that were first domesticated. The dog was the first domesticated species and has been selectively bred over millennia for various behaviors, sensory capabilities, and physical attributes","http://digital-photography-school.com/wp-content/uploads/2012/10/image5.jpg",
+                    "오소마츠상;스티커;컵;아크릴스탠드;책",-1,"10/29","11/10","","",null,null)
             val item = MainSearchListItem(null,tongpanInfo,1)
             mitemList.add(item)
         }
+
         var artistList = ArrayList<ArtistClass>()
         for(i in 0..10){
-            val artistInfo = ArtistClass(i,"kimya410","김먀","https://pbs.twimg.com/profile_images/913105871244115968/IRxddKR7_400x400.jpg")
+            val artistInfo = ArtistClass(i,"kimya410",null,"김먀","https://pbs.twimg.com/profile_images/913105871244115968/IRxddKR7_400x400.jpg","오소마츠 입덕","http://digital-photography-school.com/wp-content/uploads/2012/10/image5.jpg",null,"","")
             artistList.add(artistInfo)
         }
         val item = MainSearchListItem(artistList,null,0)
         mitemList.add(0,item)
+    }
+    fun onClickTongPanItem(tongPanItem: TongPanClass,onImageView: ImageView){
+        val intent = Intent(context, TongPanActivity::class.java)
+        intent.putExtra("tongpan", tongPanItem)
+        intent.putExtra("image_transition_name", ViewCompat.getTransitionName(onImageView))
+
+        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                activity,
+                onImageView,
+                ViewCompat.getTransitionName(onImageView))
+        startActivityForResult(intent,CoreConfigDef.ArtistIntentResultCodeTongPanActivity ,options.toBundle())
+    }
+    fun onClickArtistItem(artist: ArtistClass,onImageView: ImageView){
+
+        val intent = Intent(context, ArtistActivity::class.java)
+        intent.putExtra(EXTRA_ARTIST_NUM, artist)
+        intent.putExtra(EXTRA_IMAGE_TRANSITION_NAME, ViewCompat.getTransitionName(onImageView))
+
+
+        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                activity,
+                onImageView,
+                ViewCompat.getTransitionName(onImageView))
+
+        startActivity(intent, options.toBundle())
+
+
     }
 
     private class Messagehandler (reference:MainSearchFragment) : WeakReferenceHandler<MainSearchFragment>(reference){
