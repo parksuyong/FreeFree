@@ -5,124 +5,12 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <android.support.v4.widget.NestedScrollView
+        <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-                <android.support.constraint.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#fff">
-                    <ImageView
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:background="#f0f0f0"
-                        android:scaleType="centerCrop"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintDimensionRatio="h,5:2"
-                        android:id="@+id/headImage"/>
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:scaleType="centerInside"
-                        android:padding="8dp"
-                        android:src="@android:drawable/ic_lock_idle_alarm"
-                        android:id="@+id/alarmButton"
-                        app:layout_constraintRight_toLeftOf="@+id/fanButton"
-                        app:layout_constraintTop_toBottomOf="@+id/headImage"/>
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:scaleType="centerInside"
-                        android:padding="8dp"
-                        android:src="@android:drawable/ic_dialog_alert"
-                        android:id="@+id/fanButton"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/headImage"/>
-                    <ImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:scaleType="centerCrop"
-                        android:id="@+id/artistImage"
-                        android:layout_margin="8dp"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintBottom_toBottomOf="@+id/fanButton"/>
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/artistName"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginRight="8dp"
-                        android:gravity="left"
-                        android:textStyle="bold"
-                        android:textSize="16dp"
-                        android:textColor="#222"
-                        android:maxLines="1"
-                        android:ellipsize="end"
-                        android:text="김먀"
-                        app:layout_constraintLeft_toLeftOf="@+id/artistImage"
-                        app:layout_constraintRight_toLeftOf="@+id/alarmButton"
-                        app:layout_constraintTop_toBottomOf="@+id/artistImage"
-                        android:layout_marginEnd="8dp" />
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/comment"
-                        android:layout_marginTop="2dp"
-                        android:paddingLeft="8dp"
-                        android:paddingRight="8dp"
-                        android:textSize="12dp"
-                        android:textColor="#777"
-                        android:text="오소마츠상 작가"
-                        app:layout_constraintTop_toBottomOf="@+id/artistName"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"/>
-                    <android.support.constraint.ConstraintLayout
-                        android:layout_width="0dp"
-                        android:layout_height="12dp"
-                        android:background="#eee"
-                        android:id="@+id/dividerLayout"
-                        android:layout_marginTop="8dp"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/comment">
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="1dp"
-                            android:background="#222"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="1dp"
-                            android:background="#222"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent" />
-                    </android.support.constraint.ConstraintLayout>
+            android:layout_height="match_parent"
+            android:id="@+id/tongpanListView">
 
-
-                </android.support.constraint.ConstraintLayout>
-                <android.support.v7.widget.RecyclerView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/tongpanListView"
-                    android:nestedScrollingEnabled="false"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/dividerLayout">
-
-                </android.support.v7.widget.RecyclerView>
-
-            </LinearLayout>
-
-        </android.support.v4.widget.NestedScrollView>
+        </android.support.v7.widget.RecyclerView>
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

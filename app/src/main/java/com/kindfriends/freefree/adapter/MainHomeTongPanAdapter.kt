@@ -31,17 +31,17 @@ class MainHomeTongPanAdapter(private var mActivity: MainHomeFragment,
         var mainGlideOptions = RequestOptions()
         mGlideManager?.load(tongpanItem?.mainImage)
                 ?.apply(mainGlideOptions)
-                ?.into(TongPanViewHolder(holder.itemView).dataBinding.tongImage)
+                ?.into(TongPanViewHolder(holder.itemView).dataBinding?.mainImage)
 
-        TongPanViewHolder(holder.itemView).dataBinding.date?.setText("~"+tongpanItem?.endDate)
         TongPanViewHolder(holder.itemView).dataBinding.title?.setText(tongpanItem?.title)
 
         val tongpanId=tongpanItem?.tongNo
-        ViewCompat.setTransitionName(TongPanViewHolder(holder.itemView).dataBinding.tongImage, "TONGPANLIST $tongpanId")
+        ViewCompat.setTransitionName(TongPanViewHolder(holder.itemView).dataBinding.mainImage, "TONGPANLIST $tongpanId")
 
-        TongPanViewHolder(holder.itemView).dataBinding.root.setOnClickListener(View.OnClickListener {
-//            mActivity.onClickArtistItem(position,TongPanViewHolder(holder.itemView).dataBinding.mainImage)
-        })
+        TongPanViewHolder(holder.itemView).dataBinding.root.setOnClickListener{
+            if(tongpanItem != null)
+                mActivity.onClickTongPanItem(tongpanItem,TongPanViewHolder(holder.itemView).dataBinding.root)
+        }
 
     }
 

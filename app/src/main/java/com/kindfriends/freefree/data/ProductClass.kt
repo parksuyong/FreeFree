@@ -8,15 +8,17 @@ import android.os.Parcelable
  */
 
 data class ProductClass(
-        val artistNo: Int,
-        val productNo: Int,                                     //제품 아이디
-        val productName: String? = null,                             //제품명
-        val thumbImage: String? = null,                            //제품 이미지 경로
-        val detailImage: String? = null,                             //상세 페이지 이미지 경로
-        val createDate: String? = null,
-        val updateDate: String? = null,
-        val discounts: ArrayList<ProductDiscountClass>? = null,
-        val items: ArrayList<ProductItemsClass>? = null
+        var artistNo: Int,
+        var productNo: Int,                                     //제품 아이디
+        var productName: String? = null,                             //제품명
+        var thumbImage: String? = null,                            //제품 이미지 경로
+        var detailImage: String? = null,                             //상세 페이지 이미지 경로
+        var createDate: String? = null,
+        var updateDate: String? = null,
+        var tongSeqNo: Int=-1,
+        var tongSeq: Int=-1,
+        var discounts: ArrayList<ProductDiscountClass>? = null,
+        var items: ArrayList<ProductItemsClass>? = null
 ) : Parcelable {
     constructor(source: Parcel) : this(
             source.readInt(),
@@ -26,6 +28,8 @@ data class ProductClass(
             source.readString(),
             source.readString(),
             source.readString(),
+            source.readInt(),
+            source.readInt(),
             source.createTypedArrayList(ProductDiscountClass.CREATOR),
             source.createTypedArrayList(ProductItemsClass.CREATOR)
     )
@@ -40,6 +44,8 @@ data class ProductClass(
         writeString(detailImage)
         writeString(createDate)
         writeString(updateDate)
+        writeInt(tongSeqNo)
+        writeInt(tongSeq)
         writeTypedList(discounts)
         writeTypedList(items)
     }

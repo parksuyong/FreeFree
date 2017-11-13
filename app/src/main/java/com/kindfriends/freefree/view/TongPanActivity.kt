@@ -10,8 +10,6 @@ import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
-import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.*
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
@@ -21,10 +19,7 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.kindfriends.freefree.CoreConfigDef
-
 import com.kindfriends.freefree.R
-import com.kindfriends.freefree.adapter.ArtistTongpanAdapter
-import com.kindfriends.freefree.data.ArtistClass
 import com.kindfriends.freefree.data.TongPanClass
 import com.kindfriends.freefree.databinding.ActivityTongPanBinding
 import com.kindfriends.freefree.databinding.FragmentTongBinding
@@ -46,13 +41,9 @@ class TongPanActivity : AppCompatActivity() {
 
     private fun initialize(){
         mDataBingding = DataBindingUtil.setContentView(this,R.layout.activity_tong_pan)
-
-
-
         mGlideManager = Glide.with(this)
         if(mHandler == null)
             mHandler = Messagehandler(this)
-
 
         val extras = intent.extras
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -81,52 +72,23 @@ class TongPanActivity : AppCompatActivity() {
                     }
                 })
                 ?.into(mDataBingding?.tongpanImage)
-
-
-
-
-
-
-        mHandler?.sendEmptyMessage(CoreConfigDef.TongPanMainHandlerInitialize)
-
-        val toolbar = mDataBingding?.toolbar
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(true)
-        toolbar?.title="8월 통판 판매"
-        toolbar?.setNavigationIcon(R.drawable.abc_ic_ab_back_material)
+        mDataBingding?.toolbar?.title=mTongpan?.title
+        mDataBingding?.toolbar?.setNavigationIcon(R.drawable.abc_ic_ab_back_material)
+        setSupportActionBar(mDataBingding?.toolbar)
 
-        setSupportActionBar(toolbar)
-
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
         mSectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
-
-        // Set up the ViewPager with the sections adapter.
-//        mViewPager = findViewById<View>(R.id.container) as ViewPager
-//        mViewPager!!.adapter = mSectionsPagerAdapter
         mDataBingding?.container?.adapter = mSectionsPagerAdapter
 
         mDataBingding?.tabs?.setupWithViewPager(mDataBingding?.container)
-//        val tabLayout = findViewById(R.id.tabs) as TabLayout
-//        tabLayout.setupWithViewPager(mViewPager)
-
-        mDataBingding!!.fab.setOnClickListener(View.OnClickListener {
-            view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        })
 
         mDataBingding?.progressLayout?.visibility=View.VISIBLE
 
-
-
-    }
-    private fun initDisplay(){
+        mHandler?.sendEmptyMessage(CoreConfigDef.TongPanMainHandlerInitialize)
 
     }
-    private fun getItems(){
 
-    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -156,26 +118,28 @@ class TongPanActivity : AppCompatActivity() {
         override fun getItem(position: Int): Fragment {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1)
+            when (position) {
+                0 -> return TongPanDetailFragment.newInstance(mTongpan)
+                1 -> return TongPanDetailFragment.newInstance(mTongpan)
+                2 -> return TongPanDetailFragment.newInstance(mTongpan)
+            }
+            return TongPanDetailFragment.newInstance(mTongpan)
+
         }
 
         override fun getCount(): Int {
             // Show 3 total pages.
-            return 5
+            return 3
         }
 
         override fun getPageTitle(position: Int): CharSequence? {
-            return "SECTION $position"
 
-//            when (position) {
-//                0 -> return "SECTION 1"
-//                1 -> return "SECTION 2"
-//                2 -> return "SECTION 3"
-//                3 -> return "SECTION 3"
-//                4 -> return "SECTION 3"
-//                5 -> return "SECTION 3"
-//            }
-//            return null
+            when (position) {
+                0 -> return "상세페이지"
+                1 -> return "주의사항"
+                2 -> return "문의"
+            }
+            return null
         }
     }
 
@@ -187,9 +151,9 @@ class TongPanActivity : AppCompatActivity() {
                     //프로그래스 생성
                     mReference?.mDataBingding?.progressLayout?.visibility=View.VISIBLE
 
-                    mReference.mAdapter= ArtistTongpanAdapter(mReference,mReference.mTongpanList,mReference.mGlideManager)
-                    mReference.mdataBinding?.tongpanListView?.layoutManager = LinearLayoutManager(mReference.applicationContext)
-                    mReference.mdataBinding?.tongpanListView?.adapter=mReference.mAdapter
+//                    mReference.mAdapter= ArtistTongpanAdapter(mReference,mReference.mTongpanList,mReference.mGlideManager)
+//                    mReference.mdataBinding?.tongpanListView?.layoutManager = LinearLayoutManager(mReference.applicationContext)
+//                    mReference.mdataBinding?.tongpanListView?.adapter=mReference.mAdapter
                 }
                 CoreConfigDef.MainMessageHandlerTongpanLoad -> {
                     //프로그래스 생성
